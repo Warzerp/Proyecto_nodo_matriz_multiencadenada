@@ -15,49 +15,44 @@ public class NodoM {
         this.inferior = null;
     }
 
-    public Object obtenerValor(){
-        return valor;
+    public Object getValor() { return valor; }
+    public void setValor(Object valor) { this.valor = valor; }
+
+    public void enlazarSiguiente(NodoM siguiente) { this.siguiente = siguiente; }
+    public void enlazarAnterior(NodoM anterior) { this.anterior = anterior; }
+    public void enlazarSuperior(NodoM superior) { this.superior = superior; }
+    public void enlazarInferior(NodoM inferior) { this.inferior = inferior; }
+
+    public NodoM obtenerSiguiente() { return siguiente; }
+    public NodoM obtenerAnterior() { return anterior; }
+    public NodoM obtenerSuperior() { return superior; }
+    public NodoM obtenerInferior() { return inferior; }
+
+    public void imprimirMatrizCuadrada(int n) {
+        if (this == null) return;
+        NodoM fila = this;
+
+        for (int i = 0; i < n; i++) {
+            NodoM actual = fila;
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                String left = actual.obtenerAnterior() != null ? "<- " : "   ";
+                String right = actual.obtenerSiguiente() != null ? " ->" : "   ";
+                String val = actual.getValor() == null ? " " : actual.getValor().toString();
+                sb.append(left).append("[").append(val).append("]").append(right);
+                if (j < n - 1) sb.append(" "); // espacio entre celdas
+                actual = actual.obtenerSiguiente();
+            }
+            System.out.println(sb.toString());
+            fila = fila.obtenerInferior();
+        }
     }
 
-    public void enlazarSiguiente(NodoM siguiente) {
-        this.siguiente = siguiente;
-    }
 
-    public void enlazarAnterior(NodoM anterior) {
-        this.anterior = anterior;
-    }
-
-    public void enlazarSuperior(NodoM superior) {
-        this.superior = superior;
-    }
-    public void enlazarInferior(NodoM inferior) {
-        this.inferior = inferior;
-    }
-
-    public NodoM obtenerSiguiente() {
-        return siguiente; }
-
-    public NodoM obtenerAnterior() { return anterior;
-    }
-
-    public NodoM obtenerSuperior() {
-        return superior;
-    }
-
-    public NodoM obtenerInferior() {
-        return inferior;
-    }
-
-    public Object getValor() {
-        return valor; }
-
-    public void setValor(Object valor) {
-        this.valor = valor;
-    }
 
     // Crea y devuelve la raíz (0,0) de una matriz cuadrada n x n
     public static NodoM crearMatriz(int n, int minRandom, int maxRandom) {
-        if (n <= 0) throw new IllegalArgumentException("n debe ser mayor que 0");
+        
         Random rnd = new Random();
         NodoM[][] aux = new NodoM[n][n];
 
@@ -83,24 +78,6 @@ public class NodoM {
 
         return aux[0][0];
     }
-
-    // Imprime la matriz asumiendo que this es la raíz (0,0) de una matriz cuadrada
-    public void imprimirMatrizCuadrada(int n) {
-        NodoM fila = this;
-        for (int i = 0; i < n; i++) {
-            NodoM actual = fila;
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < n; j++) {
-                sb.append(actual.getValor());
-                if (j < n - 1) sb.append(" ");
-                actual = actual.obtenerSiguiente();
-            }
-            System.out.println(sb.toString());
-            fila = fila.obtenerInferior();
-        }
-
-    }
-
-
 }
+
 
