@@ -82,7 +82,7 @@ public class Interfaz extends JFrame {
         areaTexto = new JTextArea();
         areaTexto.setFont(new Font("Consolas", Font.BOLD, 14));
         areaTexto.setForeground(Color.WHITE);
-        areaTexto.setBackground(new Color(90, 150, 112));
+        areaTexto.setBackground(new Color(255, 255, 255, 255));
         areaTexto.setEditable(false);
         areaTexto.setMargin(new Insets(20, 25, 20, 25));
         areaTexto.setLineWrap(true);
