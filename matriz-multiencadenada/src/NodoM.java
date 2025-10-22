@@ -28,31 +28,49 @@ public class NodoM {
     public NodoM obtenerSuperior() { return superior; }
     public NodoM obtenerInferior() { return inferior; }
 
+    // Mostrar matriz con flechas de enlace
     public void imprimirMatrizCuadrada(int n) {
-        if (this == null) return;
         NodoM fila = this;
 
         for (int i = 0; i < n; i++) {
             NodoM actual = fila;
-            StringBuilder sb = new StringBuilder();
+
+            // Línea superior (flechas hacia arriba)
             for (int j = 0; j < n; j++) {
-                String left = actual.obtenerAnterior() != null ? "<- " : "   ";
-                String right = actual.obtenerSiguiente() != null ? " ->" : "   ";
-                String val = actual.getValor() == null ? " " : actual.getValor().toString();
-                sb.append(left).append("[").append(val).append("]").append(right);
-                if (j < n - 1) sb.append(" "); // espacio entre celdas
+                if (actual.obtenerSuperior() != null)
+                    System.out.print("   ↑   ");
+                else
+                    System.out.print("       ");
                 actual = actual.obtenerSiguiente();
             }
-            System.out.println(sb.toString());
+            System.out.println();
+
+            // Linea central (izquierda, valor, derecha)
+            actual = fila;
+            for (int j = 0; j < n; j++) {
+                String izq = actual.obtenerAnterior() != null ? "←" : "  ";
+                String der = actual.obtenerSiguiente() != null ? "→" : "  ";
+                System.out.print(izq + "[" + actual.getValor() + "]" + der + " ");
+                actual = actual.obtenerSiguiente();
+            }
+            System.out.println();
+
+            // Linea inferior (flechas hacia abajo)
+            actual = fila;
+            for (int j = 0; j < n; j++) {
+                if (actual.obtenerInferior() != null)
+                    System.out.print("   ↓   ");
+                else
+                    System.out.print("       ");
+                actual = actual.obtenerSiguiente();
+            }
+            System.out.println("\n");
+
             fila = fila.obtenerInferior();
         }
     }
 
-
-
-    // Crea y devuelve la raíz (0,0) de una matriz cuadrada n x n
     public static NodoM crearMatriz(int n, int minRandom, int maxRandom) {
-        
         Random rnd = new Random();
         NodoM[][] aux = new NodoM[n][n];
 
@@ -78,6 +96,62 @@ public class NodoM {
 
         return aux[0][0];
     }
+
+    public void mostrarDiagonalPrincipal(int n) {
+        NodoM actual = this;
+        System.out.print("Diagonal principal: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(actual.getValor() + " ");
+            if (actual.obtenerSiguiente() != null && actual.obtenerInferior() != null)
+                actual = actual.obtenerSiguiente().obtenerInferior();
+        }
+        System.out.println();
+    }
+
+    public void mostrarDiagonalSecundaria(int n) {
+        NodoM actual = this;
+        for (int j = 1; j < n; j++)
+            actual = actual.obtenerSiguiente();
+        System.out.print("Diagonal secundaria: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(actual.getValor() + " ");
+            if (actual.obtenerAnterior() != null && actual.obtenerInferior() != null)
+                actual = actual.obtenerAnterior().obtenerInferior();
+        }
+        System.out.println();
+    }
+
+    public void mostrarTriangularInferior(int n) {
+        NodoM fila = this;
+        System.out.println("Triangular inferior:");
+        for (int i = 0; i < n; i++) {
+            NodoM actual = fila;
+            for (int j = 0; j < n; j++) {
+                if (j <= i)
+                    System.out.print(actual.getValor() + "\t");
+                else
+                    System.out.print(" \t");
+                actual = actual.obtenerSiguiente();
+            }
+            System.out.println();
+            fila = fila.obtenerInferior();
+        }
+    }
+
+    public void mostrarTriangularSuperior(int n) {
+        NodoM fila = this;
+        System.out.println("Triangular superior:");
+        for (int i = 0; i < n; i++) {
+            NodoM actual = fila;
+            for (int j = 0; j < n; j++) {
+                if (j >= i)
+                    System.out.print(actual.getValor() + "\t");
+                else
+                    System.out.print(" \t");
+                actual = actual.obtenerSiguiente();
+            }
+            System.out.println();
+            fila = fila.obtenerInferior();
+        }
+    }
 }
-
-
