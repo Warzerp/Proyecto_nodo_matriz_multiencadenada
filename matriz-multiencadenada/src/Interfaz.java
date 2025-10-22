@@ -23,68 +23,95 @@ class PanelRedondeado extends JPanel {
 }
 
 public class Interfaz extends JFrame {
-    private JPanel panelBotones;
-    private JPanel panelMatriz;
     private JTextArea areaTexto;
-    private JButton btnCrear, btnMostrar, btnDiagonalP, btnDiagonalS, btnInferior, btnSuperior;
+    private JTextField txtN, txtMin, txtMax;
     private NodoM raiz;
     private int n;
 
     public Interfaz() {
         setTitle("Matriz Multienlazada");
-        setSize(700, 500);
+        setSize(850, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(170, 255, 170));
+        getContentPane().setBackground(new Color(180, 255, 180));
 
-        // PANEL DE BOTONES
-        panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(6, 1, 15, 15));
-        panelBotones.setBounds(50, 80, 180, 300);
-        panelBotones.setBackground(new Color(170, 255, 170));
+        // titulo
+        JLabel titulo = new JLabel("Matriz Multiencadenada", SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setForeground(new Color(40, 80, 40));
+        titulo.setBounds(200, 20, 450, 40);
+        add(titulo);
 
-        btnCrear = crearBoton("Crear Matriz");
-        btnMostrar = crearBoton("Mostrar Matriz");
-        btnDiagonalP = crearBoton("Diagonal Principal");
-        btnDiagonalS = crearBoton("Diagonal Secundaria");
-        btnInferior = crearBoton("Triangular Inferior");
-        btnSuperior = crearBoton("Triangular Superior");
+        // panel de entradas
+        JPanel panelEntrada = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
+        panelEntrada.setBounds(150, 70, 550, 40);
+        panelEntrada.setBackground(new Color(180, 255, 180));
 
-        panelBotones.add(btnCrear);
+        panelEntrada.add(new JLabel("Tamano:"));
+        txtN = new JTextField(5);
+        panelEntrada.add(txtN);
+
+        panelEntrada.add(new JLabel("Minimo:"));
+        txtMin = new JTextField(5);
+        panelEntrada.add(txtMin);
+
+        panelEntrada.add(new JLabel("Maximo:"));
+        txtMax = new JTextField(5);
+        panelEntrada.add(txtMax);
+
+        add(panelEntrada);
+
+        // boton crear matriz
+        JButton btnCrear = new JButton("Crear Matriz");
+        btnCrear.setBounds(320, 120, 200, 35);
+        btnCrear.setBackground(new Color(60, 130, 60));
+        btnCrear.setForeground(Color.WHITE);
+        btnCrear.setFont(new Font("Arial", Font.BOLD, 15));
+        btnCrear.setFocusPainted(false);
+        btnCrear.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        add(btnCrear);
+
+        // panel redondeado
+        PanelRedondeado panelMatriz = new PanelRedondeado(new Color(90, 90, 150), 50);
+        panelMatriz.setLayout(new BorderLayout());
+        panelMatriz.setBounds(80, 170, 680, 280);
+        add(panelMatriz);
+
+        // area de texto
+        areaTexto = new JTextArea();
+        areaTexto.setFont(new Font("Consolas", Font.BOLD, 14));
+        areaTexto.setForeground(Color.WHITE);
+        areaTexto.setBackground(new Color(90, 150, 112));
+        areaTexto.setEditable(false);
+        areaTexto.setMargin(new Insets(20, 25, 20, 25));
+        areaTexto.setLineWrap(true);
+        areaTexto.setWrapStyleWord(true);
+        JScrollPane scroll = new JScrollPane(areaTexto);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        panelMatriz.add(scroll, BorderLayout.CENTER);
+
+        // panel de botones inferiores
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
+        panelBotones.setBounds(100, 470, 640, 60);
+        panelBotones.setBackground(new Color(180, 255, 180));
+        add(panelBotones);
+
+        JButton btnMostrar = crearBoton("Mostrar Matriz", new Color(60, 100, 170));
+        JButton btnDiagonalP = crearBoton("Diagonal Principal", new Color(90, 90, 200));
+        JButton btnDiagonalS = crearBoton("Diagonal Secundaria", new Color(190, 110, 70));
+        JButton btnInferior = crearBoton("Triangular Inferior", new Color(100, 150, 100));
+        JButton btnSuperior = crearBoton("Triangular Superior", new Color(150, 100, 160));
+        JButton btnSalir = crearBoton("Salir", new Color(70, 70, 110));
+
         panelBotones.add(btnMostrar);
         panelBotones.add(btnDiagonalP);
         panelBotones.add(btnDiagonalS);
         panelBotones.add(btnInferior);
         panelBotones.add(btnSuperior);
-        add(panelBotones);
+        panelBotones.add(btnSalir);
 
-        // PANEL MATRIZ REDONDEADO
-        panelMatriz = new PanelRedondeado(new Color(90, 90, 150), 60);
-        panelMatriz.setLayout(new BorderLayout());
-        panelMatriz.setBounds(280, 70, 370, 300);
-        add(panelMatriz);
-
-        // AREA DE TEXTO CON MARGEN
-        areaTexto = new JTextArea();
-        areaTexto.setFont(new Font("Monospaced", Font.BOLD, 14));
-        areaTexto.setForeground(Color.WHITE);
-        areaTexto.setBackground(new Color(90, 90, 150));
-        areaTexto.setEditable(false);
-        areaTexto.setMargin(new Insets(15, 20, 15, 20));
-        panelMatriz.add(new JScrollPane(areaTexto), BorderLayout.CENTER);
-
-        // BOTON SALIR
-        JButton btnSalir = new JButton("SALIR");
-        btnSalir.setBounds(550, 400, 100, 40);
-        btnSalir.setBackground(new Color(90, 90, 150));
-        btnSalir.setForeground(Color.WHITE);
-        btnSalir.setFont(new Font("Arial", Font.BOLD, 16));
-        btnSalir.setFocusPainted(false);
-        btnSalir.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-        add(btnSalir);
-
-        // ACCIONES
+        // acciones
         btnCrear.addActionListener(e -> crearMatriz());
         btnMostrar.addActionListener(e -> mostrarMatriz());
         btnDiagonalP.addActionListener(e -> mostrarDiagonalP());
@@ -94,17 +121,24 @@ public class Interfaz extends JFrame {
         btnSalir.addActionListener(e -> System.exit(0));
     }
 
-    private JButton crearBoton(String texto) {
+    private JButton crearBoton(String texto, Color colorBase) {
         JButton b = new JButton(texto);
-        b.setBackground(new Color(90, 90, 150));
+        b.setBackground(colorBase);
         b.setForeground(Color.WHITE);
-        b.setFont(new Font("Arial", Font.BOLD, 14));
+        b.setFont(new Font("Arial", Font.BOLD, 13));
         b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        b.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
+        b.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                b.setBackground(colorBase.darker());
+            }
+            public void mouseExited(MouseEvent e) {
+                b.setBackground(colorBase);
+            }
+        });
         return b;
     }
-
-    // ==== ACCIONES ====
 
     private void mostrarTexto(String texto) {
         areaTexto.setText(texto);
@@ -112,12 +146,11 @@ public class Interfaz extends JFrame {
 
     private void crearMatriz() {
         try {
-            n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese tamaño de la matriz:"));
-            int min = Integer.parseInt(JOptionPane.showInputDialog("Valor minimo:"));
-            int max = Integer.parseInt(JOptionPane.showInputDialog("Valor maximo:"));
+            n = Integer.parseInt(txtN.getText());
+            int min = Integer.parseInt(txtMin.getText());
+            int max = Integer.parseInt(txtMax.getText());
             raiz = NodoM.crearMatriz(n, min, max);
-            JOptionPane.showMessageDialog(this, "Matriz creada correctamente");
-            mostrarTexto("Matriz creada correctamente.\nPresiona 'Mostrar Matriz' para verla");
+            mostrarTexto("Matriz creada correctamente.\nPresiona 'Mostrar Matriz' para verla.");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al crear la matriz");
         }
@@ -162,8 +195,6 @@ public class Interfaz extends JFrame {
         }
         mostrarTexto(generarTextoTriangularSuperior());
     }
-
-    // ==== FUNCIONES DE MATRIZ ====
 
     private String generarTextoMatriz() {
         StringBuilder sb = new StringBuilder("Matriz:\n");
@@ -234,7 +265,6 @@ public class Interfaz extends JFrame {
         return sb.toString();
     }
 
-    // MAIN
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Interfaz().setVisible(true));
     }
