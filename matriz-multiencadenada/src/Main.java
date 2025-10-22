@@ -4,7 +4,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         int opcion = 0;
-        Interfaz matriz = new Interfaz();
+        NodoM raiz = null;
+        int ultimoN = 0;
 
         do {
             menu();
@@ -13,26 +14,28 @@ public class Main {
 
             if (opcion == 1) {
                 System.out.print("Ingrese tamaño de la matriz: ");
-                      System.out.print("Ingrese tamaño de la matriz: ");
                 int n = keyboard.nextInt();
                 System.out.println("Ingresa el valor minimo que tendra el valor de los nodos");
                 int minRandom = keyboard.nextInt();
                 System.out.println("Ingresa el valor maximo que tendra el valor de los nodos");
                 int maxRandom = keyboard.nextInt();
-                NodoM.crearMatriz(n,minRandom,maxRandom);
+                raiz = NodoM.crearMatriz(n, minRandom, maxRandom);
+                ultimoN = n;
                 System.out.println("Muy bien hecho, matriz creada");
-            
             } else if (opcion == 2) {
-                ///matriz.mostrarMatriz();
+                if (raiz == null) {
+                    System.out.println("No hay matriz creada.");
+                } else {
+                    raiz.imprimirMatrizCuadrada(ultimoN);
+                }
             } else if (opcion == 3) {
-                ///matriz.mostrarDiagonalPrincipal();
+                // implementar mostrar diagonal principal cuando lo necesites
             } else if (opcion == 4) {
-               /// matriz.mostrarDiagonalSecundaria();
+                // implementar mostrar diagonal secundaria cuando lo necesites
             } else if (opcion == 5) {
-                ///matriz.mostrarTriangularInferior();
-            } else
-                if (opcion == 6) {
-               /// matriz.mostrarTriangularSuperior();
+                // implementar mostrar triangular inferior cuando lo necesites
+            } else if (opcion == 6) {
+                // implementar mostrar triangular superior cuando lo necesites
             } else if (opcion == 7) {
                 System.out.println(" Salir del programa");
                 System.out.println("Programa finalizado");
@@ -56,3 +59,4 @@ public class Main {
         System.out.println("7 Salir");
     }
 }
+
