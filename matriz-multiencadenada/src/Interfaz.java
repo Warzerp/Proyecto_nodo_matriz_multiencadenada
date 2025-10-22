@@ -47,7 +47,7 @@ public class Interfaz extends JFrame {
         panelEntrada.setBounds(150, 70, 550, 40);
         panelEntrada.setBackground(new Color(240, 242, 255));
 
-        panelEntrada.add(new JLabel("Tamano:"));
+        panelEntrada.add(new JLabel("Tamaño:"));
         txtN = new JTextField(5);
         panelEntrada.add(txtN);
 
