@@ -13,9 +13,15 @@ public class Main {
 
             if (opcion == 1) {
                 System.out.print("Ingrese tamaño de la matriz: ");
-                int f = keyboard.nextInt();
+                      System.out.print("Ingrese tamaño de la matriz: ");
+                int n = keyboard.nextInt();
+                System.out.println("Ingresa el valor minimo que tendra el valor de los nodos");
+                int minRandom = keyboard.nextInt();
+                System.out.println("Ingresa el valor maximo que tendra el valor de los nodos");
+                int maxRandom = keyboard.nextInt();
+                NodoM.crearMatriz(n,minRandom,maxRandom);
                 System.out.println("Muy bien hecho, matriz creada");
-                ///matriz.crearMatriz(f);
+            
             } else if (opcion == 2) {
                 ///matriz.mostrarMatriz();
             } else if (opcion == 3) {
