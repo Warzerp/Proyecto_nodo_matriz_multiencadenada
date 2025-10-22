@@ -2,6 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+class PanelRedondeado extends JPanel {
+    private Color colorFondo;
+    private int radio;
+
+    public PanelRedondeado(Color color, int radio) {
+        this.colorFondo = color;
+        this.radio = radio;
+        setOpaque(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(colorFondo);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radio, radio);
+    }
+}
+
 public class Interfaz extends JFrame {
     private JPanel panelBotones;
     private JPanel panelMatriz;
@@ -18,11 +38,11 @@ public class Interfaz extends JFrame {
         setLayout(null);
         getContentPane().setBackground(new Color(170, 255, 170));
 
-        // PANEL DE BOTONES (izquierda)
+        // PANEL DE BOTONES
         panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(6, 1, 10, 10));
+        panelBotones.setLayout(new GridLayout(6, 1, 15, 15));
         panelBotones.setBounds(50, 80, 180, 300);
-        panelBotones.setBackground(new Color(90, 90, 150));
+        panelBotones.setBackground(new Color(170, 255, 170));
 
         btnCrear = crearBoton("Crear Matriz");
         btnMostrar = crearBoton("Mostrar Matriz");
@@ -39,27 +59,29 @@ public class Interfaz extends JFrame {
         panelBotones.add(btnSuperior);
         add(panelBotones);
 
-        // PANEL MATRIZ / TEXTO (derecha)
-        panelMatriz = new JPanel();
+        // PANEL MATRIZ REDONDEADO
+        panelMatriz = new PanelRedondeado(new Color(90, 90, 150), 60);
         panelMatriz.setLayout(new BorderLayout());
-        panelMatriz.setBackground(new Color(90, 90, 150));
         panelMatriz.setBounds(280, 70, 370, 300);
         add(panelMatriz);
 
-        // Área de texto
+        // AREA DE TEXTO CON MARGEN
         areaTexto = new JTextArea();
         areaTexto.setFont(new Font("Monospaced", Font.BOLD, 14));
         areaTexto.setForeground(Color.WHITE);
         areaTexto.setBackground(new Color(90, 90, 150));
         areaTexto.setEditable(false);
+        areaTexto.setMargin(new Insets(15, 20, 15, 20));
         panelMatriz.add(new JScrollPane(areaTexto), BorderLayout.CENTER);
 
         // BOTON SALIR
         JButton btnSalir = new JButton("SALIR");
         btnSalir.setBounds(550, 400, 100, 40);
-        btnSalir.setBackground(new Color(90, 90, 150)); 
+        btnSalir.setBackground(new Color(90, 90, 150));
         btnSalir.setForeground(Color.WHITE);
         btnSalir.setFont(new Font("Arial", Font.BOLD, 16));
+        btnSalir.setFocusPainted(false);
+        btnSalir.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         add(btnSalir);
 
         // ACCIONES
@@ -76,9 +98,9 @@ public class Interfaz extends JFrame {
         JButton b = new JButton(texto);
         b.setBackground(new Color(90, 90, 150));
         b.setForeground(Color.WHITE);
-        b.setFont(new Font("Arial", Font.BOLD, 13));
+        b.setFont(new Font("Arial", Font.BOLD, 14));
         b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        b.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         return b;
     }
 
@@ -217,4 +239,3 @@ public class Interfaz extends JFrame {
         SwingUtilities.invokeLater(() -> new Interfaz().setVisible(true));
     }
 }
-
