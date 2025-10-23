@@ -1,6 +1,6 @@
 # Proyecto_nodo_matriz_multiencadenada
 
-Este proyecto implementa una matriz cuadrada utilizando una estructura de nodos multienlazados, donde cada celda está representada por un nodo que se enlaza con sus vecinos superior, inferior, izquierdo y derecho. La matriz permite operaciones como impresión visual con flechas, diagonales, y triángulos superior/inferior.
+Este proyecto implementa una matriz cuadrada utilizando una estructura de nodos multienlazados, donde cada celda está representada por un nodo que se enlaza con los nodos adyacentes superior, inferior, izquierdo y derecho. La matriz permite operaciones como impresión visual con flechas, diagonales, y triángulos superior/inferior.
 
 ## 🧠 ¿Qué es una matriz multiencadenada?
 
@@ -28,7 +28,10 @@ El proyecto incluye una interfaz visual desarrollada con Java Swing que permite:
 
 ## 📁 Estructura del proyecto
 
-matriz-multiencadenada/ ├── src/ │ ├── NodoM.java # Clase del nodo multienlazado │ ├── Main.java # Menú por consola (modo texto) │ └── Interfaz.java # Interfaz gráfica con Swing
+matriz-multiencadenada/ ├── src/ │ 
+                        | ├── NodoM.java # Clase del nodo multienlazado
+                        │ ├── Main.java # Menú por consola (modo texto)
+                        │ └── Interfaz.java # Interfaz gráfica con Swing
 
 ## ▶️ Cómo ejecutar
 
