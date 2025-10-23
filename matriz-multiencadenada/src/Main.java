@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        // importar scanner y definir valor de la opcion en 0
         Scanner keyboard = new Scanner(System.in);
         int opcion = 0;
         int n = 0;
@@ -21,7 +23,7 @@ public class Main {
                 int maxRandom = keyboard.nextInt();
                 raiz = NodoM.crearMatriz(n, minRandom, maxRandom);
                 System.out.println("Matriz creada correctamente:");
-                raiz.imprimirMatrizCuadrada(n);
+                System.out.println("Seleccione la opcion 2 para observar la matriz");
 
             } else if (opcion == 2) {
                 if (raiz != null) raiz.imprimirMatrizCuadrada(n);
@@ -55,7 +57,9 @@ public class Main {
         } while (true);
         keyboard.close();
     }
+    // itera la función  para mostar el menu hasta que el usuario salga del menu
 
+    //función que se itera para mostrar el menu
     public static void menu() {
         System.out.println("\n================== MENÚ MATRICES ==================");
         System.out.println("1 Crear matriz");
