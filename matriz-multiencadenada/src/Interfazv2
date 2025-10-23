@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
+//Interfaz sencilla con java swing
 public class Interfaz extends JFrame {
     private JTextArea salidaArea;
     private JButton btnCrear, btnMostrar, btnDiagP, btnDiagS, btnTriInf, btnTriSup, btnSalir;
