@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+// interfaz mas tecnica
 class PanelRedondeado extends JPanel {
     private Color colorFondo;
     private int radio;
