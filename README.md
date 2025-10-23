@@ -30,9 +30,9 @@ El proyecto incluye una interfaz visual desarrollada con Java Swing que permite:
 
 matriz-multiencadenada/ 
 ---src----             
-  ├── NodoM.java # Clase del nodo multienlazado
-  ├── Main.java # Menú por consola (modo texto)
-  |── Interfaz.java # Interfaz gráfica con Swing
+  ##NodoM.java # Clase del nodo multienlazado
+  ##Main.java # Menú por consola (modo texto)
+  ##Interfaz.java # Interfaz gráfica con Swing
 
 ## ▶️ Cómo ejecutar
 
