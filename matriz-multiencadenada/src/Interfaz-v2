@@ -1,0 +1,160 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+public class Interfaz extends JFrame {
+    private JTextArea salidaArea;
+    private JButton btnCrear, btnMostrar, btnDiagP, btnDiagS, btnTriInf, btnTriSup, btnSalir;
+
+    // Estado equivalente a tu Main
+    private NodoM raiz = null;
+    private int n = 0;
+
+    public Interfaz() {
+        setTitle("Matriz Multiencadenada - Interfaz");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+        initComponents();
+    }
+
+    private void initComponents() {
+        // Área de salida
+        salidaArea = new JTextArea();
+        salidaArea.setEditable(false);
+        salidaArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        JScrollPane scroll = new JScrollPane(salidaArea);
+
+        // Botones (barra vertical izquierda)
+        btnCrear = new JButton("Crear matriz");
+        btnMostrar = new JButton("Imprimir matriz");
+        btnDiagP = new JButton("Diagonal principal");
+        btnDiagS = new JButton("Diagonal secundaria");
+        btnTriInf = new JButton("Triangular inferior");
+        btnTriSup = new JButton("Triangular superior");
+        btnSalir = new JButton("Salir");
+
+        JPanel panelHerramientas = new JPanel();
+        panelHerramientas.setLayout(new GridLayout(7, 1, 6, 6));
+        panelHerramientas.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        panelHerramientas.add(btnCrear);
+        panelHerramientas.add(btnMostrar);
+        panelHerramientas.add(btnDiagP);
+        panelHerramientas.add(btnDiagS);
+        panelHerramientas.add(btnTriInf);
+        panelHerramientas.add(btnTriSup);
+        panelHerramientas.add(btnSalir);
+
+        // Contenedor principal: izquierda barra de herramientas, centro área de impresión
+        getContentPane().setLayout(new BorderLayout(8, 8));
+        getContentPane().add(panelHerramientas, BorderLayout.WEST);
+        getContentPane().add(scroll, BorderLayout.CENTER);
+
+        // Listeners
+        btnCrear.addActionListener(e -> accionCrear());
+        btnMostrar.addActionListener(e -> accionMostrar());
+        btnDiagP.addActionListener(e -> accionDiagonalPrincipal());
+        btnDiagS.addActionListener(e -> accionDiagonalSecundaria());
+        btnTriInf.addActionListener(e -> accionTriangularInferior());
+        btnTriSup.addActionListener(e -> accionTriangularSuperior());
+        btnSalir.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Programa finalizado");
+            System.exit(0);
+        });
+    }
+
+    // Utilidad: captura todo lo que los métodos imprimen por System.out y lo devuelve como String
+    private String capturarSalida(Runnable tarea) {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(buffer);
+        System.setOut(ps);
+        try {
+            tarea.run();
+        } finally {
+            System.out.flush();
+            System.setOut(originalOut);
+        }
+        return buffer.toString();
+    }
+
+    // Acción crear: solo crea la matriz y actualiza estado, no imprime nada
+    private void accionCrear() {
+        try {
+            String nStr = JOptionPane.showInputDialog(this, "Ingrese tamaño de la matriz (n):");
+            if (nStr == null) return;
+            int nuevoN = Integer.parseInt(nStr.trim());
+            String minStr = JOptionPane.showInputDialog(this, "Ingresa el valor mínimo para nodos:");
+            if (minStr == null) return;
+            String maxStr = JOptionPane.showInputDialog(this, "Ingresa el valor máximo para nodos:");
+            if (maxStr == null) return;
+            int min = Integer.parseInt(minStr.trim());
+            int max = Integer.parseInt(maxStr.trim());
+
+            // crear matriz usando NodoM.crearMatriz sin imprimir
+            n = nuevoN;
+            raiz = NodoM.crearMatriz(n, min, max);
+
+            salidaArea.append("Matriz creada correctamente: " + n + "x" + n + "\n");
+            salidaArea.append("Presiona 'Imprimir matriz' para verla.\n\n");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Entradas inválidas. Ingresa números enteros.");
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, "Error al crear la matriz: " + ex.getMessage());
+        }
+    }
+
+    private void accionMostrar() {
+        if (raiz == null) {
+            JOptionPane.showMessageDialog(this, "Primero debe crear la matriz");
+            return;
+        }
+        String salida = capturarSalida(() -> raiz.imprimirMatrizCuadrada(n));
+        salidaArea.append("Mostrar matriz:\n" + salida + "\n");
+    }
+
+    private void accionDiagonalPrincipal() {
+        if (raiz == null) {
+            JOptionPane.showMessageDialog(this, "Primero debe crear la matriz");
+            return;
+        }
+        String salida = capturarSalida(() -> raiz.mostrarDiagonalPrincipal(n));
+        salidaArea.append(salida + "\n");
+    }
+
+    private void accionDiagonalSecundaria() {
+        if (raiz == null) {
+            JOptionPane.showMessageDialog(this, "Primero debe crear la matriz");
+            return;
+        }
+        String salida = capturarSalida(() -> raiz.mostrarDiagonalSecundaria(n));
+        salidaArea.append(salida + "\n");
+    }
+
+    private void accionTriangularInferior() {
+        if (raiz == null) {
+            JOptionPane.showMessageDialog(this, "Primero debe crear la matriz");
+            return;
+        }
+        String salida = capturarSalida(() -> raiz.mostrarTriangularInferior(n));
+        salidaArea.append(salida + "\n");
+    }
+
+    private void accionTriangularSuperior() {
+        if (raiz == null) {
+            JOptionPane.showMessageDialog(this, "Primero debe crear la matriz");
+            return;
+        }
+        String salida = capturarSalida(() -> raiz.mostrarTriangularSuperior(n));
+        salidaArea.append(salida + "\n");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Interfaz gui = new Interfaz();
+            gui.setVisible(true);
+        });
+    }
+}
