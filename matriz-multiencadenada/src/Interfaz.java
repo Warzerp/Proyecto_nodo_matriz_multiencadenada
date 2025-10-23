@@ -30,7 +30,7 @@ public class Interfaz extends JFrame {
 
     public Interfaz() {
         setTitle("Matriz Multienlazada");
-        setSize(850, 600);
+        setSize(950, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
@@ -76,20 +76,17 @@ public class Interfaz extends JFrame {
         panelMatriz.setBounds(80, 170, 680, 280);
         add(panelMatriz);
 
-        // area de texto
         areaTexto = new JTextArea();
         areaTexto.setFont(new Font("Consolas", Font.BOLD, 14));
         areaTexto.setForeground(new Color(60, 60, 90));
         areaTexto.setBackground(new Color(250, 250, 255));
         areaTexto.setEditable(false);
         areaTexto.setMargin(new Insets(20, 25, 20, 25));
-        areaTexto.setLineWrap(true);
-        areaTexto.setWrapStyleWord(true);
+        areaTexto.setLineWrap(false);
+        areaTexto.setWrapStyleWord(false);
         JScrollPane scroll = new JScrollPane(areaTexto);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         panelMatriz.add(scroll, BorderLayout.CENTER);
-
-        setSize(950, 600); // un poco más ancho para los 6 botones
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 18, 15));
         panelBotones.setBounds(60, 470, 830, 60);
@@ -144,13 +141,31 @@ public class Interfaz extends JFrame {
 
     private void crearMatriz() {
         try {
-            n = Integer.parseInt(txtN.getText());
-            int min = Integer.parseInt(txtMin.getText());
-            int max = Integer.parseInt(txtMax.getText());
+            String sN = txtN.getText().trim();
+            String sMin = txtMin.getText().trim();
+            String sMax = txtMax.getText().trim();
+            if (sN.isEmpty() || sMin.isEmpty() || sMax.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos");
+                return;
+            }
+            int tn = Integer.parseInt(sN);
+            int min = Integer.parseInt(sMin);
+            int max = Integer.parseInt(sMax);
+            if (tn <= 0) {
+                JOptionPane.showMessageDialog(this, "El tamaño debe ser mayor que 0");
+                return;
+            }
+            if (min > max) {
+                JOptionPane.showMessageDialog(this, "Minimo no puede ser mayor que Maximo");
+                return;
+            }
+            n = tn;
             raiz = NodoM.crearMatriz(n, min, max);
             mostrarTexto("Matriz creada correctamente.\nPresiona 'Mostrar Matriz' para verla.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Los campos deben ser números enteros válidos");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al crear la matriz");
+            JOptionPane.showMessageDialog(this, "Error al crear la matriz: " + ex.getMessage());
         }
     }
 
@@ -198,10 +213,15 @@ public class Interfaz extends JFrame {
         StringBuilder sb = new StringBuilder("Matriz:\n");
         NodoM fila = raiz;
         for (int i = 0; i < n; i++) {
+            if (fila == null) break;
             NodoM actual = fila;
             for (int j = 0; j < n; j++) {
-                sb.append(actual.getValor()).append("\t");
-                actual = actual.obtenerSiguiente();
+                if (actual == null) {
+                    sb.append(" \t");
+                } else {
+                    sb.append(actual.getValor()).append("\t");
+                    actual = actual.obtenerSiguiente();
+                }
             }
             sb.append("\n");
             fila = fila.obtenerInferior();
@@ -213,22 +233,38 @@ public class Interfaz extends JFrame {
         StringBuilder sb = new StringBuilder("Diagonal Principal:\n");
         NodoM actual = raiz;
         for (int i = 0; i < n; i++) {
+            if (actual == null) break;
             sb.append(actual.getValor()).append("\t");
-            if (actual.obtenerSiguiente() != null && actual.obtenerInferior() != null)
-                actual = actual.obtenerSiguiente().obtenerInferior();
+            NodoM siguiente = actual.obtenerSiguiente();
+            NodoM inferior = actual.obtenerInferior();
+            if (siguiente != null && inferior != null) {
+                actual = siguiente.obtenerInferior();
+            } else {
+                break;
+            }
         }
         return sb.toString();
     }
 
     private String generarTextoDiagonalSecundaria() {
         StringBuilder sb = new StringBuilder("Diagonal Secundaria:\n");
+        if (raiz == null) return sb.toString();
         NodoM actual = raiz;
-        for (int j = 1; j < n; j++)
+        // mover al extremo derecho de la primera fila
+        for (int j = 1; j < n; j++) {
+            if (actual == null) break;
             actual = actual.obtenerSiguiente();
+        }
         for (int i = 0; i < n; i++) {
+            if (actual == null) break;
             sb.append(actual.getValor()).append("\t");
-            if (actual.obtenerAnterior() != null && actual.obtenerInferior() != null)
-                actual = actual.obtenerAnterior().obtenerInferior();
+            NodoM anterior = actual.obtenerAnterior();
+            NodoM inferior = actual.obtenerInferior();
+            if (anterior != null && inferior != null) {
+                actual = anterior.obtenerInferior();
+            } else {
+                break;
+            }
         }
         return sb.toString();
     }
@@ -237,10 +273,15 @@ public class Interfaz extends JFrame {
         StringBuilder sb = new StringBuilder("Triangular Inferior:\n");
         NodoM fila = raiz;
         for (int i = 0; i < n; i++) {
+            if (fila == null) break;
             NodoM actual = fila;
             for (int j = 0; j < n; j++) {
-                sb.append((j <= i ? actual.getValor() : " ")).append("\t");
-                actual = actual.obtenerSiguiente();
+                if (actual == null) {
+                    sb.append(" \t");
+                } else {
+                    sb.append((j <= i ? actual.getValor() : " ")).append("\t");
+                    actual = actual.obtenerSiguiente();
+                }
             }
             sb.append("\n");
             fila = fila.obtenerInferior();
@@ -252,10 +293,15 @@ public class Interfaz extends JFrame {
         StringBuilder sb = new StringBuilder("Triangular Superior:\n");
         NodoM fila = raiz;
         for (int i = 0; i < n; i++) {
+            if (fila == null) break;
             NodoM actual = fila;
             for (int j = 0; j < n; j++) {
-                sb.append((j >= i ? actual.getValor() : " ")).append("\t");
-                actual = actual.obtenerSiguiente();
+                if (actual == null) {
+                    sb.append(" \t");
+                } else {
+                    sb.append((j >= i ? actual.getValor() : " ")).append("\t");
+                    actual = actual.obtenerSiguiente();
+                }
             }
             sb.append("\n");
             fila = fila.obtenerInferior();
