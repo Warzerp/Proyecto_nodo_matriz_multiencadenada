@@ -63,10 +63,9 @@ public class NodoM {
 
             // Línea superior (flechas hacia arriba)
             for (int j = 0; j < n; j++) {
-                if (actual.obtenerSuperior() != null)
+
                     System.out.print("   ↑   ");
-                else
-                    System.out.print("       ");
+
                 actual = actual.obtenerSiguiente();
             }
             System.out.println();
@@ -74,9 +73,7 @@ public class NodoM {
             // Linea central (izquierda, valor, derecha)
             actual = fila;
             for (int j = 0; j < n; j++) {
-                String izq = actual.obtenerAnterior() != null ? "←" : "  ";
-                String der = actual.obtenerSiguiente() != null ? "→" : "  ";
-                System.out.print(izq + "[" + actual.getValor() + "]" + der + " ");
+                System.out.print(" ←[" +actual.getValor() + "]→ ");
                 actual = actual.obtenerSiguiente();
             }
             System.out.println();
@@ -84,10 +81,7 @@ public class NodoM {
             // Linea inferior (flechas hacia abajo)
             actual = fila;
             for (int j = 0; j < n; j++) {
-                if (actual.obtenerInferior() != null)
                     System.out.print("   ↓   ");
-                else
-                    System.out.print("       ");
                 actual = actual.obtenerSiguiente();
             }
             System.out.println("\n");
@@ -193,3 +187,4 @@ public class NodoM {
         }
     }
 }
+
